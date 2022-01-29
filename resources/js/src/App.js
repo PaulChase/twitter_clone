@@ -19,11 +19,12 @@ import api from "./api";
 import BottomNav from "./components/BottomNav";
 import "font-awesome/css/font-awesome.min.css";
 import AddPeep from "./components/AddPeep";
+import SinglePeep from "./components/SinglePeep";
 
 function App() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [addMessage, setAddMessage] = useState(true);
+    const [addMessage, setAddMessage] = useState(false);
     const [peeps, setPeeps] = useState(null);
 
     useEffect(() => {
@@ -71,8 +72,8 @@ function App() {
             <Routes>
                 <Route exact path="/" element={<Home peeps={peeps} />} />
 
-                <Route path="/posts/:id" element={<Show />} />
-                <Route path="/posts/:id/edit" element={<Edit />} />
+                <Route path="/peeps/:id" element={<SinglePeep />} />
+                {/* <Route path="/posts/:id/edit" element={<Edit />} /> */}
                 <Route
                     path="/register"
                     element={
