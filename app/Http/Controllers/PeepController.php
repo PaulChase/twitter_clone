@@ -36,7 +36,7 @@ class PeepController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['message' => 'string|required', 'user_id' => 'integer|required']);
+        $request->validate(['message' => 'string|required']);
 
         $peep = new Peep;
         $peep->message = $request->input('message');

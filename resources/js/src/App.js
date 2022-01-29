@@ -9,7 +9,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import Edit from "./components/Edit";
-import Add from "./components/Add";
+
 import Show from "./components/Show";
 import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
@@ -18,18 +18,20 @@ import DashBoard from "./components/DashBoard";
 import api from "./api";
 import BottomNav from "./components/BottomNav";
 import "font-awesome/css/font-awesome.min.css";
+import AddPeep from "./components/AddPeep";
 
 function App() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [addMessage, setAddMessage] = useState(true);
+    const [peeps, setPeeps] = useState(null);
 
     useEffect(() => {
         api.getLoggedInUser()
             .then((res) => {
-                console.log(res.data);
-                console.log("sure");
                 const loggedInUser = res.data.user;
                 setUser(loggedInUser);
+                getAllPeeps();
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -39,6 +41,14 @@ function App() {
             });
     }, []);
 
+    const getAllPeeps = () => {
+        api.getAllPeeps().then((res) => {
+            const results = res.data;
+            setIsLoading(false);
+            setPeeps(results.data);
+        });
+    };
+
     if (isLoading) {
         return <div>Still Loading</div>;
     }
@@ -46,10 +56,21 @@ function App() {
     return (
         <Router>
             <NavBar user={user} setLoggedInUser={(user) => setUser(user)} />
-
+            {addMessage && (
+                <AddPeep
+                    openMessageBox={(decision) => {
+                        if (decision) {
+                            setAddMessage(false);
+                            getAllPeeps();
+                        } else {
+                            setAddMessage();
+                        }
+                    }}
+                />
+            )}
             <Routes>
-                <Route exact path="/" element={<Home />} />
-                <Route path="/add" element={<Add />} />
+                <Route exact path="/" element={<Home peeps={peeps} />} />
+
                 <Route path="/posts/:id" element={<Show />} />
                 <Route path="/posts/:id/edit" element={<Edit />} />
                 <Route
@@ -68,7 +89,7 @@ function App() {
                     }
                 />
             </Routes>
-            <BottomNav />
+            <BottomNav openMessageBox={() => setAddMessage(true)} />
         </Router>
     );
 }

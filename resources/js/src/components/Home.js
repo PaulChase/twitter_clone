@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 import api from "../api";
 import EachPeep from "./EachPeep";
 
-const Home = () => {
-    const [peeps, setPeeps] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+const Home = ({ peeps }) => {
+    // const [peeps, setPeeps] = useState(null);
+    // const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        api.getAllPeeps().then((res) => {
-            const results = res.data;
+    // useEffect(() => {
+    //     api.getAllPeeps().then((res) => {
+    //         const results = res.data;
 
-            setIsLoading(false);
-            setPeeps(results.data);
-        });
-    }, []);
+    //         setIsLoading(false);
+    //         setPeeps(results.data);
+    //     });
+    // }, []);
     return (
         <div className="p-3 max-w-4xl mx-auto">
             <h2 className=" font-semibold text-lg">

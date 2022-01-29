@@ -5,7 +5,7 @@ export default {
         return axios.get("/api/peeps");
     },
     getSinglePost: (id) => axios.get(`/api/posts/${id}`),
-    addPost: (daPost) => axios.post(`/api/posts`, daPost),
+    addPeep: (theMessage) => axios.post(`/api/peeps`, theMessage),
     updatePost: (daPost, id) => axios.put(`/api/posts/${id}`, daPost),
     registerUser: (user) => axios.post("/api/register", user),
     loginUser: (user) => axios.post("/api/login", user),

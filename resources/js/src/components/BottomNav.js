@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-const BottomNav = () => {
+const BottomNav = ({ openMessageBox }) => {
     const location = useLocation();
 
     return location.pathname === "/register" ||
@@ -13,7 +13,7 @@ const BottomNav = () => {
                     {" "}
                     <i className="fa fa-home fa-2x text-gray-700"></i>
                 </button>
-                <button>
+                <button onClick={() => openMessageBox()}>
                     {" "}
                     <i className="fa fa-pencil fa-2x text-gray-700"></i>
                 </button>
