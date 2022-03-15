@@ -45,6 +45,7 @@ function App() {
     const getAllPeeps = () => {
         api.getAllPeeps().then((res) => {
             const results = res.data;
+
             setIsLoading(false);
             setPeeps(results.data);
         });
@@ -90,7 +91,7 @@ function App() {
                     }
                 />
             </Routes>
-            <BottomNav openMessageBox={() => setAddMessage(true)} />
+            {/* <BottomNav openMessageBox={() => setAddMessage(true)} /> */}
         </Router>
     );
 }

@@ -1,8 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams, matchPath } from "react-router-dom";
 
 const BottomNav = ({ openMessageBox }) => {
     const location = useLocation();
+    const { id } = useParams();
 
+    console.log(id);
     return location.pathname === "/register" ||
         location.pathname === "/login" ? (
         ""
@@ -25,5 +27,5 @@ const BottomNav = ({ openMessageBox }) => {
         </div>
     );
 };
-
+// ||     matchPath(location.pathname, { path: "/peeps/:id" })
 export default BottomNav;

@@ -15,7 +15,8 @@ class PeepController extends Controller
      */
     public function index()
     {
-        return  PeepResource::collection(Peep::orderBy('created_at', 'desc')->get());
+        $peeps = Peep::where('parent_id', 0)->orderBy('created_at', 'desc')->get();
+        return  PeepResource::collection($peeps);
     }
 
     /**
@@ -36,11 +37,12 @@ class PeepController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['message' => 'string|required']);
+        $request->validate(['message' => 'string|required', 'parentID' => 'integer']);
 
         $peep = new Peep;
         $peep->message = $request->input('message');
         $peep->user_id = auth()->id();
+        $peep->parent_id = $request->input('parentID') ? $request->input('parentID') : 0;
         $peep->status = 'active';
         $peep->save();
 
@@ -55,9 +57,15 @@ class PeepController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Peep $peep)
     {
-        return new PeepResource(Peep::findOrFail($id));
+        $replies = Peep::where('parent_id', $peep->id)->get();
+        return response()->json(
+            [
+                'peep' => $peep,
+                'replies' => $replies
+            ]
+        );
     }
 
     /**
@@ -80,11 +88,11 @@ class PeepController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate(['message' => 'string|required', 'user_id' => 'integer|required']);
+        $request->validate(['message' => 'string|required']);
 
         $peep = Peep::findOrFail($id);
         $peep->message = $request->input('message');
-        $peep->user_id = 1;
+
         $peep->status = 'active';
 
         $peep->save();
